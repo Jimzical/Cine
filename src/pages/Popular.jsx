@@ -30,6 +30,7 @@ export default class Popular extends Component {
     return (
       <div className="container mt-5">
         <div className='text-center mb-5 lead display-4'>Popular</div>
+        
         <div className="row row-cols-1 row-cols-md-4 g-4">
           {movies.map((movie, index) => (
             <div key={index} className="col mb-4">
