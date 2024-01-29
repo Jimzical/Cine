@@ -31,7 +31,8 @@ function Recommender() {
         setPaddingTop('2%');
 
         try {
-            const response = await axios.get(`http://127.0.0.1:8000/recommendations/${encodeURIComponent(item.name)}?limit=7`);
+            const response = await axios.get(`http://127.0.0.1:8000/recommendations/${item.name}?limit=9`);
+            console.log(response);
             setRecommendations(response.data.recommendations);
         } catch (error) {
             console.error(error);
@@ -47,7 +48,7 @@ function Recommender() {
     };
 
     return (
-        <div className='text-center mb-5 pt-2  lead display-4'>
+        <div className='text-center mb-5 pt-4  lead display-4'>
             Recommendations
             <div className='d-flex justify-content-center align-items-center' style={{ paddingTop, transition: 'padding-top 0.5s' }}>
                 <div style={{ width: 400 }}>
@@ -62,24 +63,32 @@ function Recommender() {
             </div>
             {selectedMovie && <p className='text-center h4 mt-3' style={{ animation: 'fadeIn 1s' }}>Movie Selected: {selectedMovie}</p>}
             
+                {/* <div className="container mt-5">
+                    {recommendations.map((movie, index) => (
+                        <div key={index}>
+                            {JSON.stringify(movie)}
+                        </div>
+                    ))}
+                </div> */}
+
             <div className="container">
                 <div className="row">
-                    {selectedMovie && movies.map((movie, index) => (
+                    {selectedMovie && recommendations.map((movie, index) => (
                         <div key={index} className="col-lg-3 col-md-4 col-sm-6 mb-4">
                             <div className="card">
                                 <img src={`https://picsum.photos/200?random=${index}`} alt="Card cap" className="card-img-top" />
                                 <div className="card-body">
-                                    <h5 className="card-title d-flex justify-content-between">
-                                        <span style={{ textTransform: 'capitalize' }}>Title: {movie.name}</span>
-                                        <span>{movie.id}⭐</span>                    
-                                    </h5>
+                                    <div className="d-flex justify-content-between align-items-center">
+                                        <h5 className="card-title mb-0" style={{ textTransform: 'capitalize' }}>{movie.original_title}</h5>
+                                        <p className="card-text mb-0 text-muted h5">{movie.id}⭐</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
             </div>
-            
+
         </div>
     );
 }

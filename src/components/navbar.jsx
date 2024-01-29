@@ -8,8 +8,8 @@ export default class NavBar extends Component {
                 <div className="container-fluid">
                     <span className='badge fs-3 bg-secondary ms-2 p-3'>CINE Recommender</span>
                     <Link className="navbar-brand ms-4" to="/">Home</Link>
-                    <Link className="navbar-brand ms-1" to="/recommend">Recommend</Link>
                     <Link className="navbar-brand ms-1" to="/popular">Popular</Link>
+                    <Link className="navbar-brand ms-1" to="/recommend">Recommend</Link>
                     <div className="collapse navbar-collapse">
                         <ul className="navbar-nav ms-auto">
                             <li className="nav-item">
