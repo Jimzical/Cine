@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ReactSearchAutocomplete } from 'react-search-autocomplete';
 import './pages.css';
+
 function Recommender() {
     const [movies, setMovies] = useState([]);
     const [selectedMovie, setSelectedMovie] = useState(null);
     const [paddingTop, setPaddingTop] = useState('10%');
+    const [recommendations, setRecommendations] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -24,9 +26,16 @@ function Recommender() {
         console.log(string, results);
     };
 
-    const handleOnSelect = (item) => {
+    const handleOnSelect = async (item) => {
         setSelectedMovie(item.name);
         setPaddingTop('2%');
+
+        try {
+            const response = await axios.get(`http://127.0.0.1:8000/recommendations/${encodeURIComponent(item.name)}?limit=7`);
+            setRecommendations(response.data.recommendations);
+        } catch (error) {
+            console.error(error);
+        }
     };
 
     const formatResult = (item) => {
@@ -51,7 +60,27 @@ function Recommender() {
                     />
                 </div>
             </div>
-            {selectedMovie && <p className='text-center h4 mt-3' style={{ animation: 'fadeIn 1s' }}>Movie Selected: {selectedMovie}</p>}        </div>
+            {selectedMovie && <p className='text-center h4 mt-3' style={{ animation: 'fadeIn 1s' }}>Movie Selected: {selectedMovie}</p>}
+            
+            <div className="container">
+                <div className="row">
+                    {selectedMovie && movies.map((movie, index) => (
+                        <div key={index} className="col-lg-3 col-md-4 col-sm-6 mb-4">
+                            <div className="card">
+                                <img src={`https://picsum.photos/200?random=${index}`} alt="Card cap" className="card-img-top" />
+                                <div className="card-body">
+                                    <h5 className="card-title d-flex justify-content-between">
+                                        <span style={{ textTransform: 'capitalize' }}>Title: {movie.name}</span>
+                                        <span>{movie.id}⭐</span>                    
+                                    </h5>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            
+        </div>
     );
 }
 
