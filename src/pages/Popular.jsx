@@ -1,81 +1,45 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import axios from 'axios';
 
 export default class Popular extends Component {
-  render() {
-    function getData() {
-      const data = {
-        "query": "spdman",
-        "matched_title": "spider man",
-        "recommendations": [
-            {
-            "id": 557,
-            "original_title": "spider man"
-            },
-            {
-            "id": 559,
-            "original_title": "spider man 3"
-            },
-            {
-              "id": 557,
-              "original_title": "spider man"
-              },
-              {
-              "id": 559,
-              "original_title": "spider man 3"
-            },
-            {
-              "id": 557,
-              "original_title": "spider man"
-              },
-              {
-              "id": 559,
-              "original_title": "spider man 3"
-            },
-            {
-              "id": 557,
-              "original_title": "spider man"
-              },
-              {
-              "id": 559,
-              "original_title": "spider man 3"
-            },
-            {
-              "id": 557,
-              "original_title": "spider man"
-              },
-              {
-              "id": 559,
-              "original_title": "spider man 3"
-            },
-            {
-              "id": 557,
-              "original_title": "spider man"
-              },
-              {
-              "id": 559,
-              "original_title": "spider man 3"
-            },
-            {
-            "id": 102382,
-            "original_title": "the amazing spider man 2"
-            }
-            
-        ]
-      };
-      return data;
-    };
-    const data = getData();
+  state = {
+    movies: [],
+    loading: true,
+  };
 
+  async componentDidMount() {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/popular?sortby=score&limit=10');
+      this.setState({ movies: response.data.movies, loading: false });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  render() {
+    const { movies, loading } = this.state;
+
+    if (loading) {
+      return (
+        <div className="d-flex justify-content-center align-items-center" style={{height: '100vh'}}>
+          <div className="spinner-border text-primary" role="status" style={{width: '3rem', height: '3rem'}}>
+          </div>
+        </div>
+      );   
+    }
     return (
-      <div className="container d-flex justify-content-center" style={{ paddingTop: '10vh' }}>
-        <div className="row">
-          {data.recommendations.map((movie, index) => (
-            <div key={index} className="col-sm-4 mb-4">
+      <div className="container mt-5">
+        <div className='text-center mb-5 lead display-4'>Popular</div>
+        <div className="row row-cols-1 row-cols-md-4 g-4">
+          {movies.map((movie, index) => (
+            <div key={index} className="col mb-4">
               <div className="card">
+                <img src="https://picsum.photos/200" alt="Card cap" className="card-img-top" />
                 <div className="card-body">
-                  <img src="https://picsum.photos/200" alt="Card cap" className="card-img-top" />
-                  <h5 className="card-title" style={{paddingTop: '2vh'}}>{movie.original_title}</h5>
-                  <p className="card-text">ID: {movie.id}</p>
+                  <h5 className="card-title d-flex justify-content-between">
+                    {movie.title}
+                    <span>{movie.id}⭐</span>                    
+                  </h5>
                 </div>
               </div>
             </div>
