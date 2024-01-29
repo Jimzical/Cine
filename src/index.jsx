@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { MantineProvider } from '@mantine/core';
+import './index.css';
 // import '@mantine/core/dist/styles.css';
 
 
